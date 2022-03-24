@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <title>API Test</title>
+    <script>
+        function call_api() {
+            console.log(document.customForm.requestUrl.value);
+            console.log(document.customForm.clientId.value);
+            console.log(document.customForm.clientPass.value);
+            console.log(document.customForm.bd.value);
+
+            var requestUrl = document.customForm.requestUrl.value;
+            const clientId = document.customForm.clientId.value;
+            const clientPass = document.customForm.clientPass.value;
+            const bd = String(document.customForm.bd.value)
+
+            var request = new XMLHttpRequest();
+            const actionType = 'POST';
+            const contentType = 'application/x-www-form-urlencoded'; //';charset=UTF-8'
+
+            request.open(actionType, requestUrl, true);
+            request.setRequestHeader('Content-Type', contentType);
+            const authBasic = window.btoa(clientId + ":" + clientPass);
+            request.setRequestHeader('Authorization', 'Basic ' + authBasic);
+            request.withCredentials = true;
+
+            request.onload = function () {
+                var data = this.response;
+                console.log(data);
+                alert(data);
+            };
+            const args = 'bd=' + bd;
+            request.send(args);
+        }
+    </script>
+</head>
+
+<body>
+    <section>
+        <form action="javascript:call_api();" method="post" class="api-form" name="customForm">
+            <div class="api-form">
+                <label for="requestUrl">URL: </label>
+                <input type="text" name="requestUrl" id="requestUrl" required>
+            </div>
+            <div class="api-form">
+                <label for="clientId">ID: </label>
+                <input type="text" name="clientId" id="clientId" required>
+            </div>
+            <div class="api-form">
+                <label for="clientPass">Pass: </label>
+                <input type="text" name="clientPass" id="clientPass" required>
+            </div>
+            <div class="api-form">
+                <label for="bd">Birthday: </label>
+                <input type="text" name="bd" id="bd" required>
+            </div>
+            <div class="api-form">
+                <input type="submit" value="Send">
+            </div>
+        </form>
+    </section>
+</body>
+
+</html>
